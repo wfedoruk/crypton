@@ -132,7 +132,7 @@
       
               <dl class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-3">
                 <div
-                  v-for="t in filteredTickers()"
+                  v-for="t in paginatedTickers"
                   v-bind:key="t.name"
                   v-on:click="select(t)"
                   :class="{'border-4': sel === t }"
@@ -225,7 +225,7 @@
             coinFilterList: [],
             page: 1,
             filter: null,
-            hasNextPage: false
+            
  
         },
         created(){
@@ -233,7 +233,33 @@
           this.getLocalData()
         },
 
+        watch:{
+          
+        },
+
         computed:{
+
+          startIndex(){
+            return (this.page - 1 )*6;
+          },
+
+          endIndex(){
+            return (this.page*6);
+          },
+
+          filteredTickers(){
+           
+           return this.tickers.filter(ticker => (ticker.name.toLowerCase()).includes(this.filter));
+
+          },
+
+          paginatedTickers(){
+            return this.filteredTickers.slice(this.startIndex, this.endIndex);
+          },
+
+          hasNextPage () {
+            return this.filteredTickers.length > this.endIndex;
+          },
           
           normalizeGraph() {
             const maxValue = Math.max(...this.graph);
@@ -250,6 +276,27 @@
         },
       
         methods: {
+
+          
+           
+          
+             // localStorage.setItem("filter-list", JSON.stringify(this.filter));
+             // localStorage.setItem("page-list", JSON.stringify(this.page));    
+            
+           
+         
+
+          // filteredTickers(){
+          //   const start = (this.page - 1 )*6;
+          //   const end = (this.page*6);
+          //   const filteredTickers = this.tickers.filter(ticker => (ticker.name.toLowerCase()).includes(this.filter));
+            
+          //   this.hasNextPage = filteredTickers.length > end;
+          //     localStorage.setItem("filter-list", JSON.stringify(this.filter));
+          //     localStorage.setItem("page-list", JSON.stringify(this.page));    
+          //     return filteredTickers.slice(start, end);
+            
+          // },
       
           getLocalData(){
             const tickersData = localStorage.getItem("crypto-list");
@@ -278,18 +325,7 @@
               });
           },
 
-          filteredTickers(){
-            const start = (this.page - 1 )*6;
-            const end = (this.page*6);
-            let filteredTickers = this.tickers;
-            filteredTickers = this.tickers.filter(ticker => (ticker.name.toLowerCase()).includes(this.filter));
-            
-            this.hasNextPage = filteredTickers.length > end;
-              localStorage.setItem("filter-list", JSON.stringify(this.filter));
-              localStorage.setItem("page-list", JSON.stringify(this.page));    
-              return filteredTickers.slice(start, end);
-            
-          },
+
       
           filteredCoins(){
            
