@@ -132,7 +132,7 @@
       
               <dl class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-3">
                 <div
-                  v-for="t in paginatedTickers"
+                  v-for="t in filteredTickers()"
                   v-bind:key="t.name"
                   v-on:click="select(t)"
                   :class="{'border-4': sel === t }"
@@ -225,7 +225,7 @@
             coinFilterList: [],
             page: 1,
             filter: null,
-            
+            hasNextPage: true
  
         },
         created(){
@@ -233,41 +233,9 @@
           this.getLocalData()
         },
 
-        watch: {
-          paginatedTickers(){
-            if (this.paginatedTickers.length === 0 && this.page > 1)
-            this.page -=1;
-          } 
-        },
-
         computed:{
-          startIndex(){
-            return (this.page - 1 )*6;
-          },
 
-          endIndex(){
-            return this.page*6;
-          },
-
-          hasNextPage() {
-            return this.filteredTickers.length > this.endIndex;
-          },
-
-          filteredTickers(){
-            
-            return this.tickers.filter(ticker => (ticker.name.toLowerCase()).includes(this.filter.toLowerCase()))
-            
-           
-            localStorage.setItem("filter-list", JSON.stringify(this.filter));
           
-          },
-
-          paginatedTickers() {
-               
-            return this.filteredTickers.slice(this.startIndex, this.endIndex);
-            localStorage.setItem("page-list", JSON.stringify(this.page)); 
-          },
-
           normalizeGraph() {
             const maxValue = Math.max(...this.graph);
             const minValue = Math.min(...this.graph);
@@ -311,7 +279,16 @@
               });
           },
 
-
+          filteredTickers(){
+            const start = (this.page - 1 )*6;
+            const end = (this.page*6);
+            const filteredTickers = this.tickers.filter(ticker => ticker.name.toLowerCase().includes(this.filter.toLowerCase()))
+            
+            this.hasNextPage = filteredTickers.length > end;
+            localStorage.setItem("filter-list", JSON.stringify(this.filter));
+            localStorage.setItem("page-list", JSON.stringify(this.page));    
+            return filteredTickers.slice(start, end);
+          },
       
           filteredCoins(){
            
@@ -384,11 +361,9 @@
           handleDelete(tickerToRemove) {
             this.tickers = this.tickers.filter(t => t != tickerToRemove);
             localStorage.setItem("crypto-list", JSON.stringify(this.tickers)); 
-            if(this.sel === tickerToRemove){
-              this.sell = null;
-              // this.graph = [];
-            }
- 
+            // if (this.filteredTickers.length === 0 && this.page > 1)
+            //   this.page -=1;
+            this.graph = [];
           }
         }
       })
