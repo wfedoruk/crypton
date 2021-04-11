@@ -254,10 +254,8 @@
           },
 
           filteredTickers(){
-
-            const filteredTickers = [];
             
-            return this.tickers.filter(ticker => ticker.name.toLowerCase().includes(this.filter.toLowerCase()))
+            return this.tickers.filter(ticker => (ticker.name.toLowerCase()).includes(this.filter.toLowerCase()))
             
            
             localStorage.setItem("filter-list", JSON.stringify(this.filter));
