@@ -254,6 +254,8 @@
           },
 
           filteredTickers(){
+
+            const filteredTickers = [];
             
             return this.tickers.filter(ticker => ticker.name.toLowerCase().includes(this.filter.toLowerCase()))
             
@@ -385,7 +387,7 @@
             this.tickers = this.tickers.filter(t => t != tickerToRemove);
             localStorage.setItem("crypto-list", JSON.stringify(this.tickers)); 
             if(this.sel === tickerToRemove){
-              this.sel = null;
+              this.sell = null;
               // this.graph = [];
             }
  
