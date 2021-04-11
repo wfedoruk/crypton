@@ -225,7 +225,7 @@
             coinFilterList: [],
             page: 1,
             filter: null,
-            hasNextPage: true
+            hasNextPage: false
  
         },
         created(){
@@ -281,12 +281,13 @@
           filteredTickers(){
             const start = (this.page - 1 )*6;
             const end = (this.page*6);
-            const filteredTickers = this.tickers.filter(ticker => ticker.name.toLowerCase().includes(this.filter))
+            const filteredTickers = this.tickers.filter(ticker => (ticker.name.toLowerCase()).includes(this.filter));
             
-            // this.hasNextPage = filteredTickers.length > end;
-            localStorage.setItem("filter-list", JSON.stringify(this.filter));
-            localStorage.setItem("page-list", JSON.stringify(this.page));    
-            return filteredTickers.slice(start, end);
+            this.hasNextPage = filteredTickers.length > end;
+              localStorage.setItem("filter-list", JSON.stringify(this.filter));
+              localStorage.setItem("page-list", JSON.stringify(this.page));    
+              return filteredTickers.slice(start, end);
+            
           },
       
           filteredCoins(){
