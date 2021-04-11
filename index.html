@@ -234,7 +234,10 @@
         },
 
         watch:{
-          
+          paginatedTickers(){
+            if (this.paginatedTickers.length === 0 && this.page > 1)
+              this.page -=1;
+          }
         },
 
         computed:{
@@ -276,28 +279,10 @@
         },
       
         methods: {
-
-          
-           
           
              // localStorage.setItem("filter-list", JSON.stringify(this.filter));
              // localStorage.setItem("page-list", JSON.stringify(this.page));    
-            
-           
-         
 
-          // filteredTickers(){
-          //   const start = (this.page - 1 )*6;
-          //   const end = (this.page*6);
-          //   const filteredTickers = this.tickers.filter(ticker => (ticker.name.toLowerCase()).includes(this.filter));
-            
-          //   this.hasNextPage = filteredTickers.length > end;
-          //     localStorage.setItem("filter-list", JSON.stringify(this.filter));
-          //     localStorage.setItem("page-list", JSON.stringify(this.page));    
-          //     return filteredTickers.slice(start, end);
-            
-          // },
-      
           getLocalData(){
             const tickersData = localStorage.getItem("crypto-list");
             
@@ -398,8 +383,7 @@
           handleDelete(tickerToRemove) {
             this.tickers = this.tickers.filter(t => t != tickerToRemove);
             localStorage.setItem("crypto-list", JSON.stringify(this.tickers)); 
-            // if (this.filteredTickers.length === 0 && this.page > 1)
-            //   this.page -=1;
+
             this.graph = [];
           }
         }
