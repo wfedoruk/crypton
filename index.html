@@ -281,7 +281,8 @@
           filteredTickers(){
             const start = (this.page - 1 )*6;
             const end = (this.page*6);
-            const filteredTickers = this.tickers.filter(ticker => (ticker.name.toLowerCase()).includes(this.filter));
+            let filteredTickers = this.tickers;
+            filteredTickers = this.tickers.filter(ticker => (ticker.name.toLowerCase()).includes(this.filter));
             
             this.hasNextPage = filteredTickers.length > end;
               localStorage.setItem("filter-list", JSON.stringify(this.filter));
