@@ -251,7 +251,7 @@
           },
 
           filteredTickers(){
-           console.log(filter);
+           console.log(this.filter);
            if(this.filter) {
             return this.tickers.filter(ticker => (ticker.name.toLowerCase()).includes(this.filter));
            };
