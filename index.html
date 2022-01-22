@@ -251,10 +251,9 @@
           },
 
           filteredTickers(){
-           console.log(this.filter);
-           if(this.filter) {
+          
             return this.tickers.filter(ticker => (ticker.name.toLowerCase()).includes(this.filter));
-           };
+
           },
 
           paginatedTickers(){
