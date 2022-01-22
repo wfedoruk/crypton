@@ -224,7 +224,7 @@
             coinList: [],
             coinFilterList: [],
             page: 1,
-            filter: null,
+            filter: false,
             
  
         },
@@ -251,9 +251,10 @@
           },
 
           filteredTickers(){
-           
-           return this.tickers.filter(ticker => (ticker.name.toLowerCase()).includes(this.filter));
-
+           console.log(filter);
+           if(filter) {
+            return this.tickers.filter(ticker => (ticker.name.toLowerCase()).includes(this.filter));
+           };
           },
 
           paginatedTickers(){
